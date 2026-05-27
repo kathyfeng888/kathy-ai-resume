@@ -448,8 +448,8 @@ body{background:var(--bg);color:var(--text)}
 .value-card:nth-child(n){border-top:2.5px solid var(--black)}
 .exp-list{max-width:980px;margin:0 auto}
 .exp-card{padding:34px 38px;background:#fff}
-.exp-year{color:#5b61f2;font-weight:900}
-.exp-year span{font-size:34px;color:#000}
+.exp-year{color:#5b61f2;font-weight:900;writing-mode:horizontal-tb;display:flex;align-items:baseline;gap:6px}
+.exp-year span{font-size:34px;color:#000;display:inline;margin:0}
 .exp-role{font-weight:800;color:#555}
 .exp-tag,.project-tech span,.skill-tag{
   border:2px solid #000;border-radius:18px;background:white;color:#000;font-weight:900;
@@ -753,8 +753,8 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
 <section class="section" id="experience">
   <div class="container">
     <div class="section-eyebrow">✦ Experience</div>
-    <h2 class="section-title">精选经历</h2>
-    <p class="section-sub">三段核心产品经历，覆盖教育 SaaS、卫星通信、内容社区，均有可量化的业务成果。</p>
+    <h2 class="section-title">工作经历</h2>
+    <p class="section-sub">三份产品经理工作，覆盖教育 SaaS、卫星通信、内容社区，均有可量化的业务成果。</p>
 
     <div class="exp-list">
       <div class="exp-card">
@@ -812,7 +812,7 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
 <section class="section" id="aiexplore">
   <div class="container">
     <div class="section-eyebrow">✦ AI Practice</div>
-    <h2 class="section-title">AI 项目探索</h2>
+    <h2 class="section-title">AI探索与实践</h2>
     <p class="section-sub">从零开始独立完成的 AI 产品，覆盖 RAG 知识库、智能体 Workflow、全栈应用开发。</p>
 
     <div class="projects-grid">
