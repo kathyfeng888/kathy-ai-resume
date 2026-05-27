@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+node_modules/
+.vercel/
+dist/
+build/
+.DS_Store
+Thumbs.db
+*.log
+index_copy.html
+参考图片*.png
+knowledge_base/_source*
