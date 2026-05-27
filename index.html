@@ -575,6 +575,13 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
 .chatbot-bubble.user{background:#5df2a0;margin-left:28px}
 .chatbot-bubble.assistant{background:white;margin-right:16px;box-shadow:4px 4px 0 #2e2824;color:#514943}
 .chatbot-bubble.error{background:#f6d7e7;color:#2e2824}
+.chatbot-followups{display:grid;gap:8px;margin-top:12px}
+.chatbot-followup{
+  border:3px solid #2e2824;border-radius:8px;background:#fffaf0;
+  color:#514943;text-align:left;padding:9px 11px;font-size:13px;font-weight:850;
+  cursor:pointer;transition:background .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.chatbot-followup:hover{background:#5df2a0;color:#2e2824;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2e2824}
 .chatbot-prompts{display:grid;gap:10px}
 .chatbot-prompt{
   border:3px solid #2e2824;background:#fffaf0;padding:10px 12px;
@@ -1037,6 +1044,52 @@ function appendChatBubble(role, text){
   bubble.textContent=text;
   chatbotLog.appendChild(bubble);
   chatbotLog.scrollTop=chatbotLog.scrollHeight;
+  return bubble;
+}
+
+function renderAssistantAnswer(bubble, answer){
+  if(!bubble) return;
+  const text=answer || '暂时没有返回内容。';
+  const lines=text.split(/\r?\n/);
+  const followups=[];
+  const bodyLines=[];
+  let inFollowups=false;
+
+  lines.forEach(function(line){
+    const trimmed=line.trim();
+    if(/^(您|你)可以继续追问[:：]?/.test(trimmed) || /^继续追问[:：]?/.test(trimmed)){
+      inFollowups=true;
+      return;
+    }
+    const match=trimmed.match(/^(?:[-*]\s*)?(?:\d+[\.、)]\s*)(.+[？?])$/);
+    if(inFollowups && match){
+      followups.push(match[1].trim());
+      return;
+    }
+    bodyLines.push(line);
+  });
+
+  bubble.textContent='';
+  const answerText=document.createElement('div');
+  answerText.textContent=bodyLines.join('\n').trim() || text;
+  bubble.appendChild(answerText);
+
+  if(followups.length){
+    const wrap=document.createElement('div');
+    wrap.className='chatbot-followups';
+    followups.forEach(function(question){
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='chatbot-followup';
+      btn.textContent=question;
+      btn.addEventListener('click',function(){
+        sendChatbotQuestion(question);
+      });
+      wrap.appendChild(btn);
+    });
+    bubble.appendChild(wrap);
+  }
+  chatbotLog.scrollTop=chatbotLog.scrollHeight;
 }
 
 function setChatbotLoading(loading){
@@ -1053,8 +1106,7 @@ async function sendChatbotQuestion(question){
   if(chatbotPrompts) chatbotPrompts.style.display='none';
   appendChatBubble('user', query);
   setChatbotLoading(true);
-  appendChatBubble('assistant', '正在整理答案...');
-  const loadingBubble=chatbotLog?.lastElementChild;
+  const loadingBubble=appendChatBubble('assistant', '正在整理答案...');
 
   try{
     const res=await fetch('/api/chat',{
@@ -1068,7 +1120,7 @@ async function sendChatbotQuestion(question){
     const data=await res.json();
     if(!res.ok) throw new Error(data.error || '请求失败');
     chatbotConversationId=data.conversation_id || chatbotConversationId;
-    if(loadingBubble) loadingBubble.textContent=data.answer || '暂时没有返回内容。';
+    renderAssistantAnswer(loadingBubble, data.answer);
   }catch(err){
     if(loadingBubble){
       loadingBubble.className='chatbot-bubble error';
