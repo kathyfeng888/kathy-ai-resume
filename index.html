@@ -1007,6 +1007,7 @@ const chatbotInput=document.getElementById('chatbotInput');
 const chatbotSend=document.getElementById('chatbotSend');
 const chatbotLog=document.getElementById('chatbotLog');
 const chatbotIntro=document.getElementById('chatbotIntro');
+const chatbotPrompts=document.querySelector('.chatbot-prompts');
 let chatbotConversationId='';
 let chatbotLoading=false;
 
@@ -1049,6 +1050,7 @@ async function sendChatbotQuestion(question){
   if(!query || chatbotLoading) return;
   setChatbotOpen(true);
   if(chatbotIntro) chatbotIntro.style.display='none';
+  if(chatbotPrompts) chatbotPrompts.style.display='none';
   appendChatBubble('user', query);
   setChatbotLoading(true);
   appendChatBubble('assistant', '正在整理答案...');
