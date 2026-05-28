@@ -15,6 +15,16 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .header h1 { font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
 .header .meta { color: #94a3b8; font-size: 14px; }
 .header .meta span { margin: 0 12px; color: #475569; }
+.header-actions { margin-top: 24px; display: flex; justify-content: center; }
+.source-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border: 1px solid #475569; border-radius: 999px;
+  background: rgba(96,165,250,0.10); color: #dbeafe; text-decoration: none;
+  font-size: 14px; font-weight: 600; box-shadow: 0 10px 28px rgba(15,23,42,0.28);
+  transition: transform .18s ease, border-color .18s ease, background .18s ease, color .18s ease;
+}
+.source-link:hover { transform: translateY(-2px); border-color: #818cf8; background: rgba(129,140,248,0.18); color: #ffffff; }
+.source-link span { color: #93c5fd; font-size: 16px; line-height: 1; }
 
 /* Stats bar */
 .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
@@ -60,6 +70,9 @@ tr:hover td { background: #0f172a; }
   <h1>上海 AI 产品经理市场需求洞察报告</h1>
   <p style="color:#94a3b8;margin-bottom:8px;">基于 BOSS 直聘 51 条招聘数据分析</p>
   <div class="meta">数据采集时间：2026-05 <span>|</span> 经验范围：3-5年 / 5-10年 <span>|</span> 地区：上海</div>
+  <div class="header-actions">
+    <a class="source-link" href="https://scnk57sd4ch7.feishu.cn/base/NgwObmYFBafjYwsLTK2cpCPmn5g?from=from_copylink" target="_blank" rel="noopener noreferrer">查看项目说明和飞书数据 <span>→</span></a>
+  </div>
 </div>
 
 <div class="container">
