@@ -530,6 +530,62 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
 .project-card:hover .project-tech span,.project-card:focus-visible .project-tech span,.project-card:focus-within .project-tech span{background:#fff}
 .project-card:focus-visible{outline:4px solid var(--mint);outline-offset:4px}
 
+#aiexplore .projects-grid{align-items:stretch}
+#aiexplore .project-card{
+  padding:0;overflow:visible;cursor:pointer;text-decoration:none;color:inherit;
+  background:#fffaf0;border:3px solid var(--black);border-radius:24px;
+  min-height:520px;box-shadow:8px 8px 0 rgba(43,35,30,.95);
+  transform:rotate(var(--tilt,0deg));
+}
+#aiexplore .project-card:nth-child(1){--case-color:#b9e2ed;--tilt:-.35deg}
+#aiexplore .project-card:nth-child(2){--case-color:#f0b0c8;--tilt:.15deg}
+#aiexplore .project-card:nth-child(3){--case-color:#d9d1ff;--tilt:.45deg}
+#aiexplore .project-card::after{display:none}
+#aiexplore .project-card > *{transform:none;transition:none}
+#aiexplore .project-card:hover,#aiexplore .project-card:focus-visible{
+  transform:translate(-4px,-5px) rotate(var(--tilt,0deg));box-shadow:13px 13px 0 rgba(43,35,30,.95);
+}
+#aiexplore .project-card:hover > *,#aiexplore .project-card:focus-visible > *{transform:none}
+#aiexplore .project-top{
+  min-height:128px;padding:28px 28px 24px;background:var(--case-color);
+  border-bottom:3px solid var(--black);display:flex;align-items:flex-start;justify-content:space-between;
+  border-radius:21px 21px 0 0;
+}
+#aiexplore .project-emoji{
+  width:70px;height:70px;border-radius:16px;background:#fffaf0!important;border:3px solid var(--black);
+  box-shadow:6px 6px 0 rgba(43,35,30,.95);font-size:30px;margin:0;
+}
+#aiexplore .project-arrow{
+  width:48px;height:48px;border:3px solid var(--black);border-radius:14px;background:#fffaf0;box-shadow:5px 5px 0 rgba(43,35,30,.95);
+  display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#6f665f;
+}
+#aiexplore .project-body{padding:32px 28px 30px;display:flex;flex-direction:column;flex:1;min-height:390px}
+#aiexplore .project-card h3{
+  font-size:24px;line-height:1.32;margin:0 0 18px;color:#5c554f;font-weight:900;
+}
+#aiexplore .project-card p{
+  color:#6f665f;font-size:16px;line-height:1.7;font-weight:600;margin:0 0 24px;flex:1;
+}
+#aiexplore .project-tech{gap:8px;margin:0 0 26px}
+#aiexplore .project-tech span,#aiexplore .project-tech span.mint,#aiexplore .project-tech span.pink{
+  border:3px solid var(--black);border-radius:18px;background:#fffaf0;color:#5c554f;
+  padding:7px 12px;font-size:13px;font-weight:900;
+}
+#aiexplore .project-case-link{
+  margin-top:auto;color:#5c554f;font-size:16px;font-weight:900;display:inline-flex;align-items:center;gap:12px;
+}
+#aiexplore .project-case-link span{font-size:26px;line-height:1}
+@media(max-width:768px){
+  #aiexplore .project-card{min-height:auto;transform:none;box-shadow:7px 7px 0 rgba(43,35,30,.95)}
+  #aiexplore .project-card:hover,#aiexplore .project-card:focus-visible{
+    transform:translate(-2px,-3px);box-shadow:10px 10px 0 rgba(43,35,30,.95);
+  }
+  #aiexplore .project-top{min-height:104px;padding:22px}
+  #aiexplore .project-body{min-height:auto;padding:26px 22px 24px}
+  #aiexplore .project-card h3{font-size:22px}
+  #aiexplore .project-card p{font-size:15px}
+}
+
 /* Chatbot entry */
 .chatbot-shell{
   position:fixed;right:28px;bottom:28px;z-index:120;
@@ -704,7 +760,7 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
       擅长定义产品策略、推进复杂项目、用 AI 验证产品价值
     </p>
     <div class="hero-cta">
-      <a href="#aiexplore" class="btn btn-primary">✦ View Projects</a>
+      <a href="#projects" class="btn btn-primary">✦ View Projects</a>
       <a href="#contact" class="btn btn-secondary">Get in Touch</a>
       <a href="assets/resume/kathy-feng-product-manager-resume.pdf" class="btn btn-ghost" download>📄 Resume</a>
     </div>
@@ -861,46 +917,63 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
     <p class="section-sub">从零开始独立完成的 AI 产品，覆盖 RAG 知识库、智能体 Workflow、全栈应用开发。</p>
 
     <div class="projects-grid">
-      <div class="project-card" tabindex="0" data-fill="mint">
-        <div class="project-emoji">🧠</div>
-        <h3>AI PM Market Intelligence Bot</h3>
-        <p>爬取 200+ BOSS 直聘 AI PM 岗位数据，构建 RAG 知识库，支持对话式查询薪资分布、技能趋势、公司分析。独立设计数据 Schema、Chunking 策略与检索逻辑，输出 6 维度市场洞察报告。</p>
-        <div class="project-tech">
-          <span>Coze</span>
-          <span class="mint">Dify</span>
-          <span class="pink">RAG</span>
-          <span>Python</span>
-          <span>Data Pipeline</span>
+      <a class="project-card" href="ai-market-intelligence.html" data-fill="mint" aria-label="查看 AI PM 岗位市场洞察项目详情">
+        <div class="project-top">
+          <div class="project-emoji">🧠</div>
+          <div class="project-arrow">→</div>
         </div>
-      </div>
-      <div class="project-card" tabindex="0" data-fill="pink">
-        <div class="project-emoji">💡</div>
-        <h3>基于飞书的 AI 灵感收集与行动转化系统</h3>
-        <p>把短视频灵感快速转成行动闭环。通过飞书消息输入灵感，AI 自动提取摘要、分类评估、生成执行建议，写入飞书多维表并创建飞书任务。支持语音转文字、原文链接提取，可稳定接收灵感、自动生成摘要与建议、沉淀知识库、回消息通知结果。</p>
-        <div class="project-tech">
-          <span>飞书多维表</span>
-          <span class="mint">AI Agent</span>
-          <span class="pink">Workflow编排</span>
-          <span>语音转文字</span>
-          <span>任务自动化</span>
+        <div class="project-body">
+          <h3>AI PM Market Intelligence Bot</h3>
+          <p>爬取 200+ BOSS 直聘 AI PM 岗位数据，构建 RAG 知识库，支持对话式查询薪资分布、技能趋势、公司分析。独立设计数据 Schema、Chunking 策略与检索逻辑，输出 6 维度市场洞察报告。</p>
+          <div class="project-tech">
+            <span>Coze</span>
+            <span class="mint">Dify</span>
+            <span class="pink">RAG</span>
+            <span>Python</span>
+            <span>数据分析</span>
+          </div>
+          <div class="project-case-link">查看实践详情 <span>→</span></div>
         </div>
-      </div>
-      <div class="project-card" tabindex="0" data-fill="lavender">
-        <div class="project-emoji">🏃</div>
-        <h3>个人运动追踪 Web App</h3>
-        <p>从产品设计到上线部署全流程独立完成。Figma 原型 + v0.dev 优化界面，Cursor/Trae 辅助开发，Supabase 数据库，Vercel 部署 + 独立域名。覆盖运动目标设定、进度追踪与数据可视化。</p>
-        <div class="project-tech">
-          <span>Cursor</span>
-          <span class="mint">Supabase</span>
-          <span class="pink">Vercel</span>
-          <span>Figma</span>
-          <span>v0.dev</span>
+      </a>
+      <a class="project-card" href="ai-inspiration-workflow.html" data-fill="pink" aria-label="查看 AI 灵感收集与行动转化系统详情">
+        <div class="project-top">
+          <div class="project-emoji">💡</div>
+          <div class="project-arrow">→</div>
         </div>
-      </div>
+        <div class="project-body">
+          <h3>基于飞书的 AI 灵感收集与行动转化系统</h3>
+          <p>把短视频灵感快速转成行动闭环。通过飞书消息输入灵感，AI 自动提取摘要、分类评估、生成执行建议，写入飞书多维表并创建飞书任务。支持语音转文字、原文链接提取，可稳定接收灵感、自动生成摘要与建议、沉淀知识库、回消息通知结果。</p>
+          <div class="project-tech">
+            <span>飞书多维表</span>
+            <span class="mint">AI Agent</span>
+            <span class="pink">Workflow编排</span>
+            <span>语音转文字</span>
+            <span>知识沉淀</span>
+          </div>
+          <div class="project-case-link">查看实践详情 <span>→</span></div>
+        </div>
+      </a>
+      <a class="project-card" href="ai-running-web-app.html" data-fill="lavender" aria-label="查看个人运动追踪 Web App 详情">
+        <div class="project-top">
+          <div class="project-emoji">🏃</div>
+          <div class="project-arrow">→</div>
+        </div>
+        <div class="project-body">
+          <h3>个人运动追踪 Web App</h3>
+          <p>从产品设计到上线部署全流程独立完成。Figma 原型 + v0.dev 优化界面，Cursor/Trae 辅助开发，Supabase 数据库，Vercel 部署 + 独立域名。覆盖运动目标设定、进度追踪与数据可视化。</p>
+          <div class="project-tech">
+            <span>Cursor</span>
+            <span class="mint">Supabase</span>
+            <span class="pink">Vercel</span>
+            <span>Figma</span>
+            <span>全栈实践</span>
+          </div>
+          <div class="project-case-link">查看实践详情 <span>→</span></div>
+        </div>
+      </a>
     </div>
   </div>
 </section>
-
 <!-- SKILLS / TOOLKIT -->
 <section class="section" id="skills">
   <div class="container">
