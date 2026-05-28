@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI PM Market Intelligence Bot</title>
+<title>AI PM Market Insight</title>
 <style>
 body{margin:0;background:#f7f4ec;color:#2b2b2b;font-family:Inter,"Noto Sans SC",Arial,sans-serif}
 .page{max-width:960px;margin:0 auto;padding:72px 22px}
@@ -21,11 +21,12 @@ h1{font-size:42px;line-height:1.18;margin:0}
 <main class="page">
   <a class="back" href="index.html#aiexplore">← 返回 AI 探索</a>
   <article class="case">
-    <div class="case-head"><h1>AI PM Market Intelligence Bot</h1></div>
+    <div class="case-head"><h1>AI PM Market Insight</h1></div>
     <div class="case-body">
-      <p>爬取 200+ BOSS 直聘 AI PM 岗位数据，构建 RAG 知识库，支持对话式查询薪资分布、技能趋势、公司分析。独立设计数据 Schema、Chunking 策略与检索逻辑，输出 6 维度市场洞察报告。</p>
-      <p>这里是 AI 实践详情页占位，后续可补充项目目标、数据处理、知识库设计、检索策略和产出结果。</p>
-      <div class="tags"><span>Coze</span><span>Dify</span><span>RAG</span><span>Python</span><span>数据分析</span></div>
+      <p>围绕传统产品经理转型 AI 产品经理的求职问题，我采集并筛选 50+ 条 BOSS 直聘 AI PM 岗位 JD，设计岗位标题、公司、城市、薪资、经验、学历、AI 关键词、工具关键词、产品方向与能力标签等结构化字段，用真实招聘数据回答“AI PM 需要补什么能力”和“传统 PM 能力如何迁移”。</p>
+      <p>由于 BOSS 直聘风控严格，项目没有采用不稳定的全自动爬取方案，而是通过 Codex 生成 JS 书签脚本进行半自动采集，再由飞书 Bot 触发 n8n Workflow，调用 LLM 抽取结构化字段并写入飞书多维表格。后续基于 jobs_v1 原始数据生成 capability_model_v1 能力模型，并用飞书仪表盘与 Claude Code 生成的 HTML 报告进行交叉验证。</p>
+      <p>项目最终沉淀出 AI PM 岗位市场洞察：大模型、Agent、RAG 等能力成为高频要求，B 端企业级 AI 应用需求更高，同时需求分析、PRD、跨团队协作、数据分析和用户研究等传统 PM 能力依然是核心底座。</p>
+      <div class="tags"><span>BOSS JD分析</span><span>n8n Workflow</span><span>飞书多维表格</span><span>能力模型</span><span>市场洞察</span></div>
     </div>
   </article>
 </main>
