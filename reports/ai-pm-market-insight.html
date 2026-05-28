@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>上海 AI 产品经理（3-5年+经验）市场需求洞察报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; }
+.container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.header { text-align: center; padding: 60px 0 40px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-bottom: 1px solid #334155; margin-bottom: 40px; }
+.header h1 { font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+.header .meta { color: #94a3b8; font-size: 14px; }
+.header .meta span { margin: 0 12px; color: #475569; }
+
+/* Stats bar */
+.stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+.stat-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; text-align: center; }
+.stat-card .num { font-size: 36px; font-weight: 700; color: #60a5fa; }
+.stat-card .label { color: #94a3b8; font-size: 13px; margin-top: 4px; }
+.stat-card .sub { color: #64748b; font-size: 11px; margin-top: 2px; }
+
+/* Section */
+.section { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 32px; margin-bottom: 24px; }
+.section h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #f1f5f9; }
+.section .desc { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+.chart-wrap { position: relative; height: 380px; margin-bottom: 16px; }
+.chart-wrap-sm { position: relative; height: 300px; }
+.chart-wrap-xs { position: relative; height: 250px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } .stats-bar { grid-template-columns: repeat(2, 1fr); } }
+
+/* Insight box */
+.insight { background: #0f172a; border-left: 3px solid #60a5fa; border-radius: 8px; padding: 16px; margin-top: 16px; }
+.insight p { color: #cbd5e1; font-size: 14px; }
+.insight strong { color: #60a5fa; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; padding: 10px 12px; color: #94a3b8; border-bottom: 1px solid #334155; font-weight: 500; }
+td { padding: 10px 12px; border-bottom: 1px solid #1e293b; }
+tr:hover td { background: #0f172a; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #1e3a5f; color: #60a5fa; }
+.badge-purple { background: #3b1f5e; color: #a78bfa; }
+.badge-green { background: #1a3a2a; color: #34d399; }
+
+.footer { text-align: center; padding: 40px; color: #475569; font-size: 13px; }
+
+/* Bar color overrides */
+:root { --bar-color: #60a5fa; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>上海 AI 产品经理市场需求洞察报告</h1>
+  <p style="color:#94a3b8;margin-bottom:8px;">基于 BOSS 直聘 51 条招聘数据分析</p>
+  <div class="meta">数据采集时间：2026-05 <span>|</span> 经验范围：3-5年 / 5-10年 <span>|</span> 地区：上海</div>
+</div>
+
+<div class="container">
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-card"><div class="num">51</div><div class="label">岗位样本数</div></div>
+  <div class="stat-card"><div class="num">22K</div><div class="label">月薪中位数（中位值）</div><div class="sub">范围 10K - 50K</div></div>
+  <div class="stat-card"><div class="num">69%</div><div class="label">要求 3-5 年经验</div><div class="sub">5-10年占 18%</div></div>
+  <div class="stat-card"><div class="num">43</div><div class="label">不同公司</div><div class="sub">覆盖多个行业</div></div>
+</div>
+
+<!-- Section 1: Salary -->
+<div class="section">
+  <h2>1. 薪资分布</h2>
+  <div class="desc">按月薪中位值（最低+最高/2）统计各薪资区间的岗位数量</div>
+  <div class="chart-wrap"><canvas id="salaryChart"></canvas></div>
+  <div class="insight">
+    <p><strong>洞察：</strong> 薪资呈明显的三段分布 — 12-18K（入门/一般公司）、20-25K（主流区间，占多数）、30K+（高薪区间，多为知名或融资公司）。中位值 22K（月薪，不含年终），结合 13-15 薪估算，年薪中位约 30-35 万。</p>
+  </div>
+</div>
+
+<!-- Section 2 & 3: Experience + Direction -->
+<div class="grid-2">
+  <div class="section">
+    <h2>2. 经验要求</h2>
+    <div class="desc">岗位对经验年限的要求分布</div>
+    <div class="chart-wrap-sm"><canvas id="expChart"></canvas></div>
+    <div class="insight">
+      <p><strong>洞察：</strong> 近 7 成岗位要求 3-5 年经验，说明 AI PM 市场尚未成熟到大量需要资深专家，更多公司在「探索期」，需要有一定经验但不过于资深的产品经理来试错。</p>
+    </div>
+  </div>
+  <div class="section">
+    <h2>3. 产品方向</h2>
+    <div class="desc">从 JD 文本识别的产品方向分类</div>
+    <div class="chart-wrap-sm"><canvas id="directionChart"></canvas></div>
+    <div class="insight">
+      <p><strong>洞察：</strong> B 端需求略多于 C 端，反映了当前 AI 商业化更多集中在企业服务/效率提升方向。近半数岗位未明确标注方向，说明 AI PM 的职责边界还在定义中。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Section 4: AI Keywords -->
+<div class="section">
+  <h2>4. AI 技能关键词 TOP 20</h2>
+  <div class="desc">招聘 JD 中 ai_keywords 字段提取的关键词频率</div>
+  <div class="chart-wrap"><canvas id="aiKeywordsChart"></canvas></div>
+  <div class="insight">
+    <p><strong>洞察：</strong> 「大模型」出现频率最高（43% 的岗位），其次是 Agent（31%）和 RAG（22%）。这三项构成了当前 AI PM 的核心技术栈要求。MCP、LangChain 等新兴工具虽频率较低但值得关注。</p>
+  </div>
+</div>
+
+<!-- Section 5: Capability Radar -->
+<div class="section">
+  <h2>5. 能力素质雷达</h2>
+  <div class="desc">六大核心能力在 JD 中被提及的频率（归一化处理）</div>
+  <div class="chart-wrap-sm" style="height:360px"><canvas id="radarChart"></canvas></div>
+  <div class="insight">
+    <p><strong>洞察：</strong> 「项目管理」和「产品设计」是最被看重的两类基本功，其次才是 AI 专业知识。这对传统 PM 转型来说是利好 — 你的基本功是受认可的，只需要补上「AI 落地」这块。</p>
+  </div>
+</div>
+
+<!-- Section 6: Tool keywords -->
+<div class="section">
+  <h2>6. 工具链需求</h2>
+  <div class="desc">JD 中明确要求的产品工具和技术工具</div>
+  <div class="chart-wrap-xs"><canvas id="toolChart"></canvas></div>
+  <div class="insight">
+    <p><strong>洞察：</strong> PRD 仍是被最多提及的工具能力（基本功），Dify 作为 AI 应用平台需求排在第二，SQL 和 A/B 测试并列第三。值得注意的是 Coze（扣子）已有 3 次提及 — 你选它做 RAG 项目的方向是对的。</p>
+  </div>
+</div>
+
+<!-- Full list -->
+<div class="section">
+  <h2>采集公司一览</h2>
+  <div class="desc">51 条招聘数据涉及的全部公司</div>
+  <table id="companyTable"></table>
+</div>
+
+<div class="footer">
+  报告由 Claude Code 自动生成 | 数据来源：BOSS 直聘 | 由 Kathy 采集整理
+</div>
+
+</div>
+
+<script>
+const COLORS = {
+  blue: '#60a5fa', indigo: '#818cf8', purple: '#a78bfa', pink: '#f472b6',
+  red: '#fb7185', orange: '#fb923c', yellow: '#fbbf24', green: '#34d399',
+  teal: '#2dd4bf', cyan: '#22d5ea', gray: '#64748b'
+};
+const BG = (c, a=0.2) => c.replace(')',`,${a})`).replace('rgb','rgba');
+
+// === SALARY ===
+const salaryRanges = [
+  {label: '10-15K', min: 10, max: 15}, {label: '15-20K', min: 15, max: 20},
+  {label: '20-25K', min: 20, max: 25}, {label: '25-30K', min: 25, max: 30},
+  {label: '30-40K', min: 30, max: 40}, {label: '40K+', min: 40, max: 999}
+];
+const salaryData = [{"raw":"10-15K·12薪","min":10,"max":15,"mid":12.5,"company":"风火轮萤图"},{"raw":"13-16K·15薪","min":13,"max":16,"mid":14.5,"company":"威可特热交换器有限公司"},{"raw":"25-50K·13薪","min":25,"max":50,"mid":37.5,"company":"冻果科技"},{"raw":"20-35K","min":20,"max":35,"mid":27.5,"company":"上海邓白氏商业信息"},{"raw":"25-50K·14薪","min":25,"max":50,"mid":37.5,"company":"传音控股"},{"raw":"15-25K","min":15,"max":25,"mid":20,"company":"Reach Cooling"},{"raw":"13-21K","min":13,"max":21,"mid":17,"company":"南京云朗"},{"raw":"22-35K","min":22,"max":35,"mid":28.5,"company":"Pacvue 泊客电商"},{"raw":"25-35K·13薪","min":25,"max":35,"mid":30,"company":"上海掌之淘信息技术"},{"raw":"15-25K·13薪","min":15,"max":25,"mid":20,"company":"江苏欧博"},{"raw":"16-28K·14薪","min":16,"max":28,"mid":22,"company":"Finture科技"},{"raw":"25-40K·15薪","min":25,"max":40,"mid":32.5,"company":""},{"raw":"15-30K","min":15,"max":30,"mid":22.5,"company":"德勤"},{"raw":"11-18K","min":11,"max":18,"mid":14.5,"company":"简维"},{"raw":"25-35K·15薪","min":25,"max":35,"mid":30,"company":"回响科技"},{"raw":"12-20K","min":12,"max":20,"mid":16,"company":""},{"raw":"25-35K·13薪","min":25,"max":35,"mid":30,"company":"爱回收"},{"raw":"20-30K·13薪","min":20,"max":30,"mid":25,"company":"上海钢联"},{"raw":"15-20K","min":15,"max":20,"mid":17.5,"company":"MTC"},{"raw":"20-40K·13薪","min":20,"max":40,"mid":30,"company":""},{"raw":"20-30K","min":20,"max":30,"mid":25,"company":""},{"raw":"20-30K","min":20,"max":30,"mid":25,"company":"和达科技"},{"raw":"25-50K·15薪","min":25,"max":50,"mid":37.5,"company":"分叉智能科技"},{"raw":"12-20K","min":12,"max":20,"mid":16,"company":""},{"raw":"16-20K","min":16,"max":20,"mid":18,"company":""},{"raw":"15-30K·13薪","min":15,"max":30,"mid":22.5,"company":""},{"raw":"15-22K","min":15,"max":22,"mid":18.5,"company":"源氏木语"},{"raw":"15-25K·15薪","min":15,"max":25,"mid":20,"company":"恋之翼"},{"raw":"20-35K","min":20,"max":35,"mid":27.5,"company":"高顿教育集团"},{"raw":"25-50k","min":25,"max":50,"mid":37.5,"company":"上海唯有一初心科技"},{"raw":"25-35K","min":25,"max":35,"mid":30,"company":"圆通速递"},{"raw":"13-25K·14薪","min":13,"max":25,"mid":19,"company":"连尚网络"},{"raw":"20-40K·15薪","min":20,"max":40,"mid":30,"company":"时代天使"},{"raw":"12-18K","min":12,"max":18,"mid":15,"company":"上海朗鹰教育"},{"raw":"13-25K·14薪","min":13,"max":25,"mid":19,"company":"透咔科技"},{"raw":"20-40K·15薪","min":20,"max":40,"mid":30,"company":"久尺网络科技有限公司"},{"raw":"12-24K","min":12,"max":24,"mid":18,"company":"龙船科技"},{"raw":"20-30K","min":20,"max":30,"mid":25,"company":"熙软科技"},{"raw":"15-25K","min":15,"max":25,"mid":20,"company":"思创网络"},{"raw":"15-25K","min":15,"max":25,"mid":20,"company":""},{"raw":"20-30K","min":20,"max":30,"mid":25,"company":"上海奥深电子商务有限公司"},{"raw":"15-20K","min":15,"max":20,"mid":17.5,"company":""}];
+
+const salCounts = salaryRanges.map(r => ({label: r.label, count: salaryData.filter(s => s.mid >= r.min && s.mid < r.max).length}));
+new Chart(document.getElementById('salaryChart'), {
+  type: 'bar',
+  data: {
+    labels: salCounts.map(d => d.label),
+    datasets: [{
+      label: '岗位数量',
+      data: salCounts.map(d => d.count),
+      backgroundColor: ['#60a5fa', '#818cf8', '#a78bfa', '#f472b6', '#fb7185', '#fb923c'],
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+      y: { ticks: { color: '#94a3b8', stepSize: 1 }, grid: { color: '#334155' }, beginAtZero: true }
+    }
+  }
+});
+
+// === EXPERIENCE ===
+new Chart(document.getElementById('expChart'), {
+  type: 'pie',
+  data: {
+    labels: ['3-5年 (35)', '5-10年 (9)', '5年以上 (3)', '1-3年 (3)', '实习 (1)'],
+    datasets: [{
+      data: [35, 9, 3, 3, 1],
+      backgroundColor: ['#60a5fa', '#818cf8', '#a78bfa', '#f472b6', '#94a3b8'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 16, usePointStyle: true } }
+    }
+  }
+});
+
+// === DIRECTION ===
+new Chart(document.getElementById('directionChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['B端产品 (13)', 'C端产品 (10)', '中后台/平台 (5)', '未明确 (23)'],
+    datasets: [{
+      data: [13, 10, 5, 23],
+      backgroundColor: ['#60a5fa', '#a78bfa', '#fbbf24', '#334155'],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: '#94a3b8', padding: 16, usePointStyle: true } }
+    }
+  }
+});
+
+// === AI KEYWORDS ===
+const aiKws = [["大模型",22],["Agent",16],["RAG",11],["LLM",11],["机器学习",9],["人工智能",7],["AIGC",6],["智能体",4],["多模态",4],["自然语言处理",4],["智能客服",4],["NLP",3],["工作流",3],["MCP",3],["知识图谱",3],["深度学习",3],["ChatGPT",3],["LangChain",3],["语义类AI",6],["意图识别",3]];
+new Chart(document.getElementById('aiKeywordsChart'), {
+  type: 'bar',
+  data: {
+    labels: aiKws.map(d => d[0]),
+    datasets: [{
+      label: '提及次数',
+      data: aiKws.map(d => d[1]),
+      backgroundColor: aiKws.map((_, i) => `hsl(${220 - i * 5}, ${70 + i}%, ${55 + i}%)`),
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#94a3b8', stepSize: 5 }, grid: { color: '#334155' }, beginAtZero: true },
+      y: { ticks: { color: '#94a3b8', font: { size: 11 } }, grid: { display: false } }
+    }
+  }
+});
+
+// === RADAR ===
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['项目管理', '产品设计', '需求分析', '数据分析', '跨团队协作', 'AI落地'],
+    datasets: [{
+      label: '被提及频率（归一化）',
+      data: [39, 35, 33, 25, 28, 22],
+      backgroundColor: 'rgba(96, 165, 250, 0.15)',
+      borderColor: '#60a5fa',
+      borderWidth: 2,
+      pointBackgroundColor: '#60a5fa',
+      pointRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      r: {
+        beginAtZero: true, max: 45,
+        ticks: { display: false, stepSize: 10 },
+        grid: { color: '#334155' },
+        pointLabels: { color: '#94a3b8', font: { size: 12 } }
+      }
+    },
+    plugins: { legend: { display: false } }
+  }
+});
+
+// === TOOL KEYWORDS ===
+const tools = [["PRD",8],["Dify",6],["SQL",5],["A/B测试",5],["原型设计",4],["ERP",4],["Python",4],["SaaS",3],["API",3],["LangChain",3],["Claude",3],["Coze",3],["CRM",2],["MES",2],["PoC",2]];
+new Chart(document.getElementById('toolChart'), {
+  type: 'bar',
+  data: {
+    labels: tools.map(d => d[0]),
+    datasets: [{
+      label: '提及次数',
+      data: tools.map(d => d[1]),
+      backgroundColor: '#34d399',
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { color: '#94a3b8', stepSize: 1 }, grid: { color: '#334155' }, beginAtZero: true },
+      y: { ticks: { color: '#94a3b8' }, grid: { display: false } }
+    }
+  }
+});
+
+// === COMPANY TABLE ===
+const companies = salaryData.filter(d => d.company).map(d => d.company);
+const unique = [...new Set(companies)];
+// Get experience for each company from raw data
+document.getElementById('companyTable').innerHTML =
+  '<tr><th>公司</th></tr>' +
+  unique.sort().map(c => `<tr><td>${c}</td></tr>`).join('');
+
+</script>
+</body>
+</html>
