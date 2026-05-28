@@ -660,13 +660,32 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
 .chatbot-bubble.user{background:#5df2a0;margin-left:28px}
 .chatbot-bubble.assistant{background:white;margin-right:16px;box-shadow:4px 4px 0 #2e2824;color:#514943}
 .chatbot-bubble.error{background:#f6d7e7;color:#2e2824}
+.chatbot-loading{display:inline-flex;align-items:center;gap:2px}
+.chatbot-loading-dots{display:inline-flex;gap:2px;margin-left:1px}
+.chatbot-loading-dots span{
+  width:4px;height:4px;border-radius:50%;background:#514943;display:block;
+  animation:chatbotDotPulse 1s infinite ease-in-out;
+}
+.chatbot-loading-dots span:nth-child(2){animation-delay:.16s}
+.chatbot-loading-dots span:nth-child(3){animation-delay:.32s}
+@keyframes chatbotDotPulse{
+  0%,80%,100%{transform:translateY(0);opacity:.35}
+  40%{transform:translateY(-4px);opacity:1}
+}
 .chatbot-followups{display:grid;gap:8px;margin-top:12px}
 .chatbot-followup{
   border:3px solid #2e2824;border-radius:8px;background:#fffaf0;
-  color:#514943;text-align:left;padding:9px 11px;font-size:13px;font-weight:850;
+  color:#514943;text-align:left;padding:9px 36px 9px 11px;font-size:13px;font-weight:850;
   cursor:pointer;transition:background .18s ease,transform .18s ease,box-shadow .18s ease;
+  position:relative;line-height:1.45;
 }
-.chatbot-followup:hover{background:#5df2a0;color:#2e2824;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2e2824}
+.chatbot-followup::after{
+  content:'→';position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  font-size:17px;font-weight:900;color:#2e2824;transition:transform .18s ease;
+}
+.chatbot-followup:hover,.chatbot-followup:focus-visible{background:#5df2a0;color:#2e2824;transform:translate(-2px,-2px);box-shadow:4px 4px 0 #2e2824;outline:none}
+.chatbot-followup:hover::after,.chatbot-followup:focus-visible::after{transform:translate(3px,-50%)}
+.chatbot-followup:active{transform:translate(0,0);box-shadow:2px 2px 0 #2e2824}
 .chatbot-prompts{display:grid;gap:10px}
 .chatbot-prompt{
   border:3px solid #2e2824;background:#fffaf0;padding:10px 12px;
@@ -1172,6 +1191,13 @@ function appendChatBubble(role, text){
   return bubble;
 }
 
+function appendChatLoadingBubble(){
+  const bubble=appendChatBubble('assistant','');
+  if(!bubble) return;
+  bubble.innerHTML='<span class="chatbot-loading">正在整理答案，请稍等<span class="chatbot-loading-dots" aria-hidden="true"><span></span><span></span><span></span></span></span>';
+  return bubble;
+}
+
 function renderAssistantAnswer(bubble, answer){
   if(!bubble) return;
   const text=answer || '暂时没有返回内容。';
@@ -1182,13 +1208,14 @@ function renderAssistantAnswer(bubble, answer){
 
   lines.forEach(function(line){
     const trimmed=line.trim();
-    if(/^(您|你)可以继续追问[:：]?/.test(trimmed) || /^继续追问[:：]?/.test(trimmed)){
+    if(/^(您|你)?可以继续追问[:：]?/.test(trimmed) || /^(继续追问|追问建议|下一步问题|推荐问题)[:：]?/.test(trimmed)){
       inFollowups=true;
       return;
     }
-    const match=trimmed.match(/^(?:[-*]\s*)?(?:\d+[\.、)]\s*)(.+[？?])$/);
-    if(inFollowups && match){
-      followups.push(match[1].trim());
+    const match=trimmed.match(/^(?:[-*•]\s*)?(?:(?:\d+|[一二三四五六七八九十])[\.\、\)]\s*)?(.+)$/);
+    if(inFollowups && match && match[1]){
+      const question=match[1].replace(/\*\*/g,'').trim();
+      if(question && !/^[-—]+$/.test(question)) followups.push(question);
       return;
     }
     bodyLines.push(line);
@@ -1202,7 +1229,7 @@ function renderAssistantAnswer(bubble, answer){
   if(followups.length){
     const wrap=document.createElement('div');
     wrap.className='chatbot-followups';
-    followups.forEach(function(question){
+    [...new Set(followups)].slice(0,3).forEach(function(question){
       const btn=document.createElement('button');
       btn.type='button';
       btn.className='chatbot-followup';
@@ -1231,7 +1258,7 @@ async function sendChatbotQuestion(question){
   if(chatbotPrompts) chatbotPrompts.style.display='none';
   appendChatBubble('user', query);
   setChatbotLoading(true);
-  const loadingBubble=appendChatBubble('assistant', '正在整理答案...');
+  const loadingBubble=appendChatLoadingBubble();
 
   try{
     const res=await fetch('/api/chat',{
