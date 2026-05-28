@@ -575,6 +575,15 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
   margin-top:auto;color:#5c554f;font-size:16px;font-weight:900;display:inline-flex;align-items:center;gap:12px;
 }
 #aiexplore .project-case-link span{font-size:26px;line-height:1}
+.site-toast{
+  position:fixed;left:50%;bottom:112px;z-index:140;
+  transform:translate(-50%,18px);opacity:0;pointer-events:none;
+  background:#fffaf0;border:3px solid #2e2824;border-radius:16px;
+  box-shadow:6px 6px 0 #2e2824;color:#2e2824;
+  padding:12px 16px;font-size:14px;font-weight:900;
+  transition:opacity .22s ease,transform .22s ease;
+}
+.site-toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:768px){
   #aiexplore .project-card{min-height:auto;transform:none;box-shadow:7px 7px 0 rgba(43,35,30,.95)}
   #aiexplore .project-card:hover,#aiexplore .project-card:focus-visible{
@@ -917,7 +926,7 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
     <p class="section-sub">从零开始独立完成的 AI 产品，覆盖 RAG 知识库、智能体 Workflow、全栈应用开发。</p>
 
     <div class="projects-grid">
-      <a class="project-card" href="ai-market-intelligence.html" data-fill="mint" aria-label="查看 AI PM 岗位市场洞察项目详情">
+      <a class="project-card ai-practice-card" href="#chatbotShell" data-fill="mint" aria-label="体验 AI 面试助手了解 AI PM 岗位市场洞察项目">
         <div class="project-top">
           <div class="project-emoji">🧠</div>
           <div class="project-arrow">→</div>
@@ -935,7 +944,7 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
           <div class="project-case-link">查看实践详情 <span>→</span></div>
         </div>
       </a>
-      <a class="project-card" href="ai-inspiration-workflow.html" data-fill="pink" aria-label="查看 AI 灵感收集与行动转化系统详情">
+      <a class="project-card ai-practice-card" href="#chatbotShell" data-fill="pink" aria-label="体验 AI 面试助手了解 AI 灵感收集与行动转化系统">
         <div class="project-top">
           <div class="project-emoji">💡</div>
           <div class="project-arrow">→</div>
@@ -953,20 +962,20 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
           <div class="project-case-link">查看实践详情 <span>→</span></div>
         </div>
       </a>
-      <a class="project-card" href="ai-running-web-app.html" data-fill="lavender" aria-label="查看个人运动追踪 Web App 详情">
+      <a class="project-card ai-practice-card" href="#chatbotShell" data-fill="lavender" aria-label="体验 AI 面试助手了解个人简历网站与 AI 面试助手">
         <div class="project-top">
-          <div class="project-emoji">🏃</div>
+          <div class="project-emoji">🤖</div>
           <div class="project-arrow">→</div>
         </div>
         <div class="project-body">
-          <h3>个人运动追踪 Web App</h3>
-          <p>从产品设计到上线部署全流程独立完成。Figma 原型 + v0.dev 优化界面，Cursor/Trae 辅助开发，Supabase 数据库，Vercel 部署 + 独立域名。覆盖运动目标设定、进度追踪与数据可视化。</p>
+          <h3>个人简历网站与 AI 面试助手</h3>
+          <p>围绕 AI 产品经理求职场景，独立设计并搭建个人简历网站，使用 Codex Agent 辅助完成页面结构、交互细节与部署迭代。核心亮点是集成 AI Chatbot 面试助手，通过 Dify Workflow 接入 RAG 知识库，让面试官可围绕经历、项目、能力匹配主动提问，获得更聚焦的候选人信息。</p>
           <div class="project-tech">
-            <span>Cursor</span>
-            <span class="mint">Supabase</span>
-            <span class="pink">Vercel</span>
-            <span>Figma</span>
-            <span>全栈实践</span>
+            <span>Codex Agent</span>
+            <span class="mint">Dify Workflow</span>
+            <span class="pink">RAG 知识库</span>
+            <span>AI Chatbot</span>
+            <span>Vercel</span>
           </div>
           <div class="project-case-link">查看实践详情 <span>→</span></div>
         </div>
@@ -1076,6 +1085,8 @@ footer{background:#fff;border-top:2.5px solid #000;color:#333}
   </button>
 </div>
 
+<div class="site-toast" id="siteToast" role="status" aria-live="polite">请点击右下角 AI 面试助手体验</div>
+
 <!-- SCRIPTS -->
 <script>
 function closeMobileNav(){
@@ -1110,8 +1121,20 @@ const chatbotSend=document.getElementById('chatbotSend');
 const chatbotLog=document.getElementById('chatbotLog');
 const chatbotIntro=document.getElementById('chatbotIntro');
 const chatbotPrompts=document.querySelector('.chatbot-prompts');
+const siteToast=document.getElementById('siteToast');
+let siteToastTimer=null;
 let chatbotConversationId='';
 let chatbotLoading=false;
+
+function showSiteToast(message){
+  if(!siteToast) return;
+  siteToast.textContent=message;
+  siteToast.classList.add('show');
+  window.clearTimeout(siteToastTimer);
+  siteToastTimer=window.setTimeout(function(){
+    siteToast.classList.remove('show');
+  },2400);
+}
 
 function setChatbotOpen(open){
   if(!chatbotShell || !chatbotLaunch || !chatbotPanel) return;
@@ -1130,6 +1153,13 @@ chatbotClose?.addEventListener('click',function(){
 
 document.addEventListener('keydown',function(e){
   if(e.key === 'Escape') setChatbotOpen(false);
+});
+
+document.querySelectorAll('.ai-practice-card').forEach(function(card){
+  card.addEventListener('click',function(e){
+    e.preventDefault();
+    showSiteToast('请点击右下角 AI 面试助手体验');
+  });
 });
 
 function appendChatBubble(role, text){
